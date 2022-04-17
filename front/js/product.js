@@ -36,37 +36,40 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 /************************************************************/
 /*********************Gestion du panier*********************/
 
+/******************************************************************************************/
+
+//Variable pour recuperer les clés et valeurs du localStorage
+let basket = JSON.parse(localStorage.getItem("basket"));
+
+//l'objet contenant les informations du produit
+let product = {
+  id: productId,
+  quantity: Number(document.getElementById("quantity").value),
+  color: document.getElementById("colors").value,
+};
+
+//Fonction pour ajouter des articles au panier
+let addToBasket = function () {
+  //On injecte le produit avec ses données dans le localStorage
+  basket.push(product);
+  //Et l'enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
+  localStorage.setItem("basket", JSON.stringify(basket));
+};
+
+/*********************Lors du clique sur le bouton "ajouter au panier"*********************/
 //Boutton ajouter au panier
 const btnAddToBasket = document.getElementById("addToCart");
 
-//lors du clique sur le boutton on recupère les éléments suivant
 btnAddToBasket.addEventListener("click", function () {
-  let product = {
-    id: productId,
-    quantity: Number(document.getElementById("quantity").value),
-    color: document.getElementById("colors").value,
-  };
-
-  //Variable contenant les clés et valeurs du localStorage
-  let basket = JSON.parse(localStorage.getItem("basket"));
-
   //Si le localStorage est vide alors :
   if (basket == null) {
     //on créer un array
     basket = [];
     //On y injecte le produit avec ses données
-    basket.push(product);
-    //Et l'enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
-    localStorage.setItem("basket", JSON.stringify(basket));
-    console.table(basket);
+    addToBasket();
     console.log("Panier crée");
-
-    //Sinon
   } else {
-    //On push le produit dans l'array
-    basket.push(product);
-    //on l'enregistre
-    localStorage.setItem("basket", JSON.stringify(basket));
+    addToBasket();
     console.log("article ajouté");
   }
 });
