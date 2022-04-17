@@ -33,38 +33,38 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 
   .catch((err) => console.log(err));
 
+/************************************************************/
 /*********************Gestion du panier*********************/
 
-//Ajout de l'article au localStorage lors du click sur le boutton ajouter au panier
-// Enregistrer le pannier dans le localStorage
+//Boutton ajouter au panier
+const btnAddToBasket = document.getElementById("addToCart");
 
-const addToBasket = (product) =>
-  localStorage.setItem("basket", JSON.stringify(product));
-let recupBasket = JSON.parse(localStorage.getItem("basket"));
-
-//variable du btn "ajouter au panier"
-let btnAdd = document.getElementById("addToCart");
-
-//lors du clique sur le boutton on recupère les éléments suivant dans un objet
-btnAdd.addEventListener("click", function () {
+//lors du clique sur le boutton on recupère les éléments suivant
+btnAddToBasket.addEventListener("click", function () {
   let product = {
     id: productId,
-    quantity: document.getElementById("quantity").value,
+    quantity: Number(document.getElementById("quantity").value),
     color: document.getElementById("colors").value,
   };
-  //on enregistre le produit dans le localStorage
-  addToBasket(product);
 
-  //Ce que je dois faire :
-  //Si le produit est déjà dispo ++
-  //sinon push et set
+  //Variable contenant les clés et valeurs du localStorage
+  let basket = JSON.parse(localStorage.getItem("basket"));
 
-  if (recupBasket == null) {
-    //Si le produit est déjà dispo, push.product et setItem
-    recupBasket == [];
+  //Si il y a un élément dans le localStorage alors :
+  if (basket) {
+    basket.push(product);
+    localStorage.setItem("basket", JSON.stringify(product));
+    console.log("article ajouté");
+
+    //Si le localStorage est vide alors:
   } else {
-    recupBasket.push(product);
-    addToBasket(product);
-    console.log("Ok c'est bon");
+    //on recupère un tableau
+    basket = [];
+    //On injecte le produit avec ses données
+    basket.push(product);
+    //Et l'enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
+    localStorage.setItem("basket", JSON.stringify(product));
+    console.table(basket);
+    console.log("Panier crée");
   }
 });
