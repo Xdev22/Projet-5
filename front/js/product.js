@@ -53,7 +53,7 @@ let addToBasket = function () {
   //Ajout de l'objet produit dans l'array dans le localStorage
   basket.push(product);
   //Enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
-  localStorage.setItem("basket", JSON.stringify(product));
+  localStorage.setItem("basket", JSON.stringify(basket));
 };
 
 /*********************Lors du clique sur le bouton "ajouter au panier"*********************/
