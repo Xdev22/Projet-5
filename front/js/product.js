@@ -50,21 +50,23 @@ btnAddToBasket.addEventListener("click", function () {
   //Variable contenant les clés et valeurs du localStorage
   let basket = JSON.parse(localStorage.getItem("basket"));
 
-  //Si il y a un élément dans le localStorage alors :
-  if (basket) {
-    basket.push(product);
-    localStorage.setItem("basket", JSON.stringify(product));
-    console.log("article ajouté");
-
-    //Si le localStorage est vide alors:
-  } else {
-    //on recupère un tableau
+  //Si le localStorage est vide alors :
+  if (basket == null) {
+    //on créer un array
     basket = [];
-    //On injecte le produit avec ses données
+    //On y injecte le produit avec ses données
     basket.push(product);
     //Et l'enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
-    localStorage.setItem("basket", JSON.stringify(product));
+    localStorage.setItem("basket", JSON.stringify(basket));
     console.table(basket);
     console.log("Panier crée");
+
+    //Sinon
+  } else {
+    //On push le produit dans l'array
+    basket.push(product);
+    //on l'enregistre
+    localStorage.setItem("basket", JSON.stringify(basket));
+    console.log("article ajouté");
   }
 });
