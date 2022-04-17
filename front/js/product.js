@@ -54,25 +54,17 @@ btnAdd.addEventListener("click", function () {
   };
   //on enregistre le produit dans le localStorage
   addToBasket(product);
+
+  //Ce que je dois faire :
   //Si le produit est déjà dispo ++
   //sinon push et set
 
   if (recupBasket == null) {
     //Si le produit est déjà dispo, push.product et setItem
+    recupBasket == [];
+  } else {
     recupBasket.push(product);
     addToBasket(product);
     console.log("Ok c'est bon");
-    // } else {
-    //   /*
-    //   let find = recupBasket.find(
-    //     (x) => x.id === product.id && x.color === product.color
-    //   );*/
-    //   if (find) {
-    //     //si j'ai un produit du même id et de la meme couleur alors produit++
-    //     //ajouter dans le product dans le localStorage
-    //     console.log("ok");
-    //   }
-    // }
-    console.log(recupBasket);
   }
 });
