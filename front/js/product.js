@@ -38,7 +38,7 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 
 /******************************************************************************************/
 
-//Variable pour recuperer les clés et valeurs du localStorage
+//Variable pour recuperer le panier du localStorage
 let basket = JSON.parse(localStorage.getItem("basket"));
 
 //l'objet contenant les informations du produit
@@ -50,10 +50,10 @@ let product = {
 
 //Fonction pour ajouter des articles au panier
 let addToBasket = function () {
-  //On injecte le produit avec ses données dans le localStorage
+  //Ajout de l'objet produit dans l'array dans le localStorage
   basket.push(product);
-  //Et l'enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
-  localStorage.setItem("basket", JSON.stringify(basket));
+  //Enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
+  localStorage.setItem("basket", JSON.stringify(product));
 };
 
 /*********************Lors du clique sur le bouton "ajouter au panier"*********************/
@@ -61,11 +61,11 @@ let addToBasket = function () {
 const btnAddToBasket = document.getElementById("addToCart");
 
 btnAddToBasket.addEventListener("click", function () {
-  //Si le localStorage est vide alors :
+  //Si le panier est vide alors :
   if (basket == null) {
     //on créer un array
     basket = [];
-    //On y injecte le produit avec ses données
+    //On y injecte le produit (l'objet product)
     addToBasket();
     console.log("Panier crée");
   } else {
