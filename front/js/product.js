@@ -38,22 +38,38 @@ fetch(`http://localhost:3000/api/products/${productId}`)
 
 /******************************************************************************************/
 
-//Variable pour recuperer le panier du localStorage
-let basket = JSON.parse(localStorage.getItem("basket"));
-
-//l'objet contenant les informations du produit
-let product = {
-  id: productId,
-  quantity: Number(document.getElementById("quantity").value),
-  color: document.getElementById("colors").value,
-};
-
 //Fonction pour ajouter des articles au panier
-let addToBasket = function () {
-  //Ajout de l'objet produit dans l'array dans le localStorage
-  basket.push(product);
-  //Enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
-  localStorage.setItem("basket", JSON.stringify(basket));
+let addToBasket = function (product) {
+  //Variable pour recuperer le panier du localStorage
+  let basket = JSON.parse(localStorage.getItem("basket"));
+  //Si le panier est vide alors :
+  if (basket == null) {
+    //on créer un array (le panier)
+    basket = [];
+    console.log("Panier crée");
+  }
+  //On recupere un produit avec même id et couleur dans le localStorage
+  let newProduct = basket.find(
+    (p) => p.id === product.id && p.color === product.color
+  );
+  //On récupère l'index du produit pour faire la mise à jour du produit dû à l'ajout de la quantité
+  let newProductIndex = basket.findIndex(
+    (p) => p.id === product.id && p.color === product.color
+  );
+  if (newProduct) {
+    newProduct.quantity += product.quantity;
+    basket[newProductIndex].quantity = newProduct.quantity;
+    localStorage.setItem("basket", JSON.stringify(basket));
+    console.log("Nouvelle valeur du produit");
+    console.log(newProduct);
+  } else {
+    //Ajout de l'objet produit dans l'array dans le localStorage
+    basket.push(product);
+    console.log("valeur du produit ");
+    console.log(basket);
+    //Enregistre dans le localStorage en le stringifiant car la valeur se doit d'être en string.
+    localStorage.setItem("basket", JSON.stringify(basket));
+  }
 };
 
 /*********************Lors du clique sur le bouton "ajouter au panier"*********************/
@@ -61,15 +77,12 @@ let addToBasket = function () {
 const btnAddToBasket = document.getElementById("addToCart");
 
 btnAddToBasket.addEventListener("click", function () {
-  //Si le panier est vide alors :
-  if (basket == null) {
-    //on créer un array
-    basket = [];
-    //On y injecte le produit (l'objet product)
-    addToBasket();
-    console.log("Panier crée");
-  } else {
-    addToBasket();
-    console.log("article ajouté");
-  }
+  //l'objet contenant les informations du produit
+  let product = {
+    id: productId,
+    quantity: Number(document.getElementById("quantity").value),
+    color: document.getElementById("colors").value,
+  };
+
+  addToBasket(product);
 });
