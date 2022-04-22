@@ -14,4 +14,12 @@ fetch("http://localhost:3000/api/products")
         </a>`;
     }
   })
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    let h1 = document.querySelector(".titles h1");
+    let h2 = document.querySelector(".titles h2");
+    h1.textContent =
+      "Nous sommes désolé, une erreur s'est produite. Veuillez actualiser la page. Si le problème persiste, contactez le support.";
+    h1.style.fontSize = "32px";
+    h2.style.display = "none";
+    console.log(err);
+  });

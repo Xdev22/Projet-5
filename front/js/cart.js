@@ -2,6 +2,7 @@
 let basket = JSON.parse(localStorage.getItem("basket"));
 
 /*********************Récupération des éléments du panier et les afficher*********************/
+//Si le panier contient un produit
 if (basket) {
   for (let product of basket) {
     fetch(`http://localhost:3000/api/products/${product.id}`)
@@ -34,7 +35,8 @@ if (basket) {
 
     console.log(product.id);
   }
-  /*********************Afficher "Panier vide" si vide*********************/
+
+  /*********************Sinon Afficher "Panier vide" si vide*********************/
 } else {
   let basketTitle = document.querySelector("#cartAndFormContainer h1");
   let cart = document.querySelector("#cartAndFormContainer .cart");
@@ -43,8 +45,6 @@ if (basket) {
 }
 
 /*********************Supprimé le produit*********************/
-
-window.addEventListener("load", () => {
-  let btnDelete = document.querySelectorAll(".deleteItem");
-  console.log(btnDelete);
-});
+let basketTitle = document.querySelector("#title");
+console.log(basketTitle);
+let btnSupp = document.querySelector("#addToCart");
