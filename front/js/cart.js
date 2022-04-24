@@ -32,11 +32,16 @@ const getBasket = async function (product) {
     })
     .catch((err) => console.log(err));
 
-  console.log("2");
   btnDlt();
+  console.log("2");
 };
 console.log("dehors");
 
+/*********************Supprimé le produit*********************/
+const btnDlt = () => {
+  let btnsDelete = document.querySelectorAll(".deleteItem");
+  console.log(btnsDelete);
+};
 //Fonction affichage du panier
 const previewBasket = async () => {
   //Si le panier contient un produit
@@ -55,11 +60,6 @@ const previewBasket = async () => {
 
 previewBasket();
 
-/*********************Supprimé le produit*********************/
-const btnDlt = () => {
-  let btnsDelete = document.querySelectorAll("deleteItem");
-  console.log(btnsDelete);
-};
 // for (let btn in btnsDelete) {
 //   btn.onclick = function () {
 //     console.log("ls");
