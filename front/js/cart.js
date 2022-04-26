@@ -30,25 +30,81 @@ const getBasket = async function (product) {
         </article>`;
       console.log(productApi);
     })
-    .catch((err) => console.log(err));
-
-  btnDlt();
-  console.log("2");
+    .catch((err) => console.log("Erreur de promesse: " + err));
 };
-console.log("dehors");
 
 /*********************Supprimé le produit*********************/
-const btnDlt = () => {
+const removeFromBasket = (product) => {
+  //Variable du boutton delete
   let btnsDelete = document.querySelectorAll(".deleteItem");
+  for (let btn of btnsDelete) {
+    btn.addEventListener("click", function () {
+      //On cherche le produit avec même id et couleur dans le localStorage
+      let findProductToDelete = basket.find(
+        (p) => p.id === product.id && p.color === product.color
+      );
+      //On récupère l'index du produit pour faire la mise à jour du produit dû à suppression
+      let findProductToDeleteIndex = basket.findIndex(
+        (p) => p.id === product.id && p.color === product.color
+      );
+
+      basket.splice(findProductToDeleteIndex, 1);
+      localStorage.setItem("basket", JSON.stringify(basket));
+      window.location.reload();
+      console.log(basket);
+
+      console.log("Le produit à été supprimé");
+    });
+  }
   console.log(btnsDelete);
 };
-//Fonction affichage du panier
+
+const changeQuantity = (product) => {
+  //Variable du boutton changeQuantity
+  let itemQuantityInput = document.querySelectorAll(".itemQuantity");
+  for (let input of itemQuantityInput) {
+    input.addEventListener("change", function (e) {
+      //On recupere un produit avec même id et couleur dans le localStorage
+      let findProductToChange = basket.find(
+        (p) => p.id === product.id && p.color === product.color
+      );
+      //On récupère l'index du produit pour faire la mise à jour du produit dû à la modification de la quantité
+      let findProductToChangeIndex = basket.findIndex(
+        (p) => p.id === product.id && p.color === product.color
+      );
+      if (e.target.value.length <= 3 && e.target.value <= 100) {
+        product.quantity = e.target.value;
+        findProductToChange.quantity = product.quantity;
+
+        basket[findProductToChangeIndex].quantity =
+          findProductToChange.quantity;
+
+        if (findProductToChange.quantity <= 0) {
+          basket.splice(findProductToChangeIndex, 1);
+          window.location.reload();
+        }
+        localStorage.setItem("basket", JSON.stringify(basket));
+
+        console.log("La quantité du produit " + product.id + " à été modifié");
+      } else {
+        console.log("err");
+      }
+    });
+  }
+  console.log(itemQuantityInput);
+};
+
+/*********************Fonction affichage du panier*********************/
+
 const previewBasket = async () => {
   //Si le panier contient un produit
-  if (basket) {
-    for (let product of basket) {
-      getBasket(product);
+  if (basket && basket.length > 0) {
+    for (var product of basket) {
+      await getBasket(product);
+      console.log(product.id);
     }
+    removeFromBasket(product);
+    changeQuantity(product);
     //Sinon Afficher "Panier vide"
   } else {
     let basketTitle = document.querySelector("#cartAndFormContainer h1");
@@ -59,9 +115,3 @@ const previewBasket = async () => {
 };
 
 previewBasket();
-
-// for (let btn in btnsDelete) {
-//   btn.onclick = function () {
-//     console.log("ls");
-//   };
-// }
