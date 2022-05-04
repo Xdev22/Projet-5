@@ -90,14 +90,15 @@ let settingsQuantity = document.querySelector(
   ".item__content__settings__quantity"
 );
 settingsQuantity.appendChild(qtyErr);
-//Boutton ajouter au panier
-const btnAddToBasket = document.getElementById("addToCart");
 
 //Fonction Verification couleur
 let colorErrFunction = () => {
   select.addEventListener("input", function (e) {
     let value = e.target.value;
-    if (value == 0) {
+    if (value != 0) {
+      select.style.border = " transparent";
+      colorErr.style.display = "none";
+    } else {
       select.style.border = " 3px solid red";
       colorErr.textContent = "Veuillez choisir une couleur";
       colorErr.style.color = "#850808";
@@ -105,9 +106,7 @@ let colorErrFunction = () => {
       colorErr.style.marginTop = "5px";
       colorErr.style.display = "block";
       console.log("je suis la fonction err color");
-    } else {
-      select.style.border = " transparent";
-      colorErr.style.display = "none";
+      
     }
   });
 };
@@ -116,18 +115,17 @@ let qtyErrFunction = () => {
   //Verifcation quantité
   input.addEventListener("input", function (e) {
     let value = e.target.value;
-    if (value <= 0 || value > 100) {
+    if (value > 0 && value <= 100) {
+      input.style.border = " transparent";
+      qtyErr.style.display = "none";
+    } else {
       qtyErr.textContent = "Veuillez choisir une quantité valide";
       qtyErr.style.color = "#850808";
       qtyErr.style.marginLeft = "175px";
       qtyErr.style.marginTop = "5px";
       input.style.border = " 3px solid red";
       qtyErr.style.display = "block";
-
       console.log("je suis la fonction err qty");
-    } else {
-      input.style.border = " transparent";
-      qtyErr.style.display = "none";
     }
   });
 };
@@ -142,9 +140,13 @@ const inputVerificator = () => {
 inputVerificator();
 /*********************Lors du clique sur le bouton "ajouter au panier"*********************/
 
+//Boutton ajouter au panier
+const btnAddToBasket = document.getElementById("addToCart");
+
+
 btnAddToBasket.addEventListener("click", function () {
   //Si choix de couleur et de produit invalide
-  if (select.selectedIndex ==0 && input.value <= 0 || input.value > 100) {
+  if (select.selectedIndex == 0 && input.value <= 0 || input.value > 100) {
     //Style du msg colorErr
     colorErr.textContent = "Veuillez choisir une couleur";
     colorErr.style.color = "#850808";
@@ -161,12 +163,21 @@ btnAddToBasket.addEventListener("click", function () {
     console.log("Choisissez une couleur et un nombre valide");
     //Si choix du nombre invalide
   } else if (input.value <= 0 || input.value > 100) {
-    qtyErrFunction();
+    qtyErr.textContent = "Veuillez choisir une quantité valide";
+    qtyErr.style.color = "#850808";
+    qtyErr.style.marginLeft = "175px";
+    qtyErr.style.marginTop = "5px";
+    input.style.border = " 3px solid red";
     console.log("Veuillez choisir un nombre valide");
 
     //Si choix de couleur invalide
   } else if (select.selectedIndex == 0) {
-    colorErrFunction;
+    //Style du msg colorErr
+    colorErr.textContent = "Veuillez choisir une couleur";
+    colorErr.style.color = "#850808";
+    colorErr.style.marginLeft = "175px";
+    colorErr.style.marginTop = "5px";
+    select.style.border = " 3px solid red";
     console.log("veuillez choisir une couleur");
 
     //Si tout est bon
@@ -179,6 +190,7 @@ btnAddToBasket.addEventListener("click", function () {
     };
     //Ajoute le produit au panier
     addToBasket(product);
-    
+    window.location.pathname= "front/html/cart.html"
   }
 });
+
